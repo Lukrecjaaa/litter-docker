@@ -1,0 +1,6 @@
+[submodule "litter"]
+	path = litter
+	url = https://github.com/Lukrecjaaa/litter
+[submodule "litter-api"]
+	path = litter-api
+	url = https://github.com/Lukrecjaaa/litter-api

@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  caddy:
+    container_name: caddy
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - '8888:8888'
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+    depends_on:
+      - litter
+
+  litter:
+    container_name: litter
+    build:
+      context: .
+      dockerfile: litter.dockerfile
+    depends_on: 
+      - litter-api
+    entrypoint: [ 'http-server', 'dist' ]
+    expose:
+      - 8080
+
+  litter-api:
+    container_name: litter-api
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: litter-api.dockerfile
+    depends_on: 
+      - redis
+    tty: true
+    entrypoint: ['node', 'index.js']
+    volumes:
+      - ./uploads:/api/uploads
+  
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - ./redis-data:/data
+    expose:
+      - 6379
+
+networks:
+  net:
+    external: true

@@ -1,0 +1,16 @@
+http://localhost:8888 {
+	@exclude_root {
+		not path /
+		not path /css/*
+		not path /js/*
+		not path /favicon.ico
+		not path /index.html
+	}
+
+	handle_path /post/* {
+		reverse_proxy http://litter-api:3000
+	}
+
+	reverse_proxy @exclude_root http://litter-api:3000
+	reverse_proxy http://litter:8080
+}
