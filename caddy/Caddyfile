@@ -3,6 +3,7 @@ http://localhost:8888 {
 		not path /
 		not path /css/*
 		not path /js/*
+		not path /img/*
 		not path /favicon.ico
 		not path /index.html
 	}
